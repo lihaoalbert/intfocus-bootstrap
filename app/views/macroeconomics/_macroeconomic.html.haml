@@ -1,0 +1,19 @@
+%li[macroeconomic]{ highlightable(dom_id(macroeconomic, :tools)) }
+  .strip{:class => macroeconomic.country}= t(macroeconomic.country)
+
+  .tools{ invisible, :id => dom_id(macroeconomic, :tools) }
+    = link_to_edit(macroeconomic) + " | "
+    = link_to_delete(macroeconomic)
+
+  .indent
+    = link_to(macroeconomic.country, macroeconomic)
+    %tt
+      = t(:added_by, :time_ago => time_ago_in_words(macroeconomic.created_at), :user => (macroeconomic.user.id == @current_user.id ? t(:me) : macroeconomic.user.full_name)) << " | "
+
+    - unless @current_user.preference[:macroeconomics_outline] == "brief"
+      -#= render "macroeconomics/metrics", :macroeconomic => macroeconomic
+      - if macroeconomic.tag_list.present?
+        %dt
+          .tags= tags_for_index(macroeconomic)
+
+      = hook(:macroeconomic_bottom, self, :macroeconomic => macroeconomic)

@@ -1,0 +1,13 @@
+#about{ hidden }
+  %h3
+    #{t :about_ffc_version}
+    %span.cool== v#{IntfocusCore::VERSION::STRING}
+    == (#{ActiveRecord::Base.connection.adapter_name.downcase})
+  %p
+    #{t :about_thank_you}
+
+  #{t :about_ffc_resources}:
+  %ul{:style => "margin: 0px 0px 0px 15px"}
+    %li== &raquo; #{link_to t(:about_home_page), "http://www.intfocus.com", :"data-popup" => true}
+
+  %br

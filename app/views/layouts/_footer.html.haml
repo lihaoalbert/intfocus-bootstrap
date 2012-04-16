@@ -1,0 +1,11 @@
+#footer
+  Powered by #{link_to "Intfocus", "http://www.intfocus.com", :"data-popup" => true }
+  v#{IntfocusCore::VERSION::STRING} &copy; 2011-#{Date.today.year} 
+  \|
+  = image_tag "iconset_attribution.png"
+
+  - unless tabless_layout?
+    \|
+    = link_to(t(:about_ffc), "#", :title => t(:about_ffc), :onclick => "Modalbox.show($('about'), { title: this.title }); return false;")
+%br
+= render "layouts/about"

@@ -1,0 +1,14 @@
+= simple_form_for(@macroeconomic, :html => one_submit_only(:macroeconomic), :remote => true) do |f|
+  = link_to_close new_macroeconomic_path
+  = f.hidden_field :user_id
+
+  = f.error_messages :object_name => t('macroeconomic')
+
+  = render "macroeconomics/top_section", :f => f
+  = render "fields/groups",  :f => f
+  = render "macroeconomics/permissions", :f => f
+
+  .buttonbar
+    = f.submit t(:create_macroeconomic)
+    #{t :or}
+    = link_to_cancel new_macroeconomic_path

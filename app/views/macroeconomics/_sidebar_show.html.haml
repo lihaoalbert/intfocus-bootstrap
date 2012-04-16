@@ -1,0 +1,22 @@
+.panel#summary
+  .caption #{t :macroeconomic_summary}
+  %li
+    %dt
+    %tt #{t :start_date}:
+  %li
+    %dt
+    %tt #{t :end_date}:
+  %li
+    %dt= @macroeconomic.country ? t(@macroeconomic.country) : t(:n_a)
+    %tt #{t :country}:
+  %li.last
+    %dt= t(:n_a)
+    %tt #{t :budget}:
+
+  = render "fields/sidebar_show", :asset => @macroeconomic
+
+  - if @macroeconomic.tag_list.present?
+    %dt
+      .tags= tags_for_index(@macroeconomic)
+
+  = hook(:show_macroeconomic_sidebar_bottom, self, :macroeconomic => @macroeconomic)

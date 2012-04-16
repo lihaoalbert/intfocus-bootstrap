@@ -1,0 +1,48 @@
+# == Schema Information
+#
+# Table name: accounts
+#
+#  id              :integer         not null, primary key
+#  user_id         :integer
+#  assigned_to     :integer
+#  name            :string(64)      default(""), not null
+#  access          :string(8)       default("Public")
+#  website         :string(64)
+#  toll_free_phone :string(32)
+#  phone           :string(32)
+#  fax             :string(32)
+#  deleted_at      :datetime
+#  created_at      :datetime
+#  updated_at      :datetime
+#  email           :string(64)
+#  background_info :string(255)
+#  rating          :integer         default(0), not null
+#  category        :string(32)
+#
+
+<%
+  require "ffaker"
+  puts "Loading accounts..."
+
+  Faker::PhoneNumber::Formats = ["(###)###-####"]
+  category = %w(affiliate competitor customer partner reseller vendor) << nil
+
+  for i in (1 .. rand(20) + 100) do
+%>
+account<%= i %>:
+  id               : <%= i %>
+  user_id          : <%= rand(8) + 1 %>
+  assigned_to      : <%= rand(8) + 1 %>
+  name             : <%= company = Faker::Company.name %>
+  access           : Public
+  website          : http://www.<%= company.downcase.gsub(/\W/, "") %>.com
+  toll_free_phone  : 1-800-<%= "%03d-%04d" % [rand(999), rand(9999)] %>
+  phone            : <%= Faker::PhoneNumber.phone_number %>
+  fax              : <%= Faker::PhoneNumber.phone_number %>
+  email            : info@<%= company.downcase.gsub(/\W/, "") %>.com
+  background_info  : <%= Faker::Company.catch_phrase << " " << Faker::Company.bs %>
+  rating           : <%= rand(5) %>
+  category         : <%= category.sample %>
+  created_at       : <%= created_at = (rand(60) + 2).days.ago + rand(600).minutes; created_at.to_s(:db) %>
+  updated_at       : <%= (created_at + rand(36_000).seconds).to_s(:db) %>
+<% end %>

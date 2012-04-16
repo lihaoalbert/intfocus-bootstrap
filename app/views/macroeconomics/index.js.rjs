@@ -1,0 +1,6 @@
+unless @macroeconomics.blank?
+  page[:macroeconomics].replace_html render @macroeconomics
+else
+  page[:macroeconomics].replace_html :partial => "shared/empty"
+end
+page[:paginate].replace_html :partial => "shared/paginate"

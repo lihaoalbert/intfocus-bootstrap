@@ -1,0 +1,29 @@
+- content_for(:tabless) do
+  500 error
+
+!!!5
+%html{ :xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => :en,  :lang => :en }
+  %head
+    %meta{ "http-equiv" => "Content-Type", :content => "text/html; charset=utf-8" }
+    %title Intfocus Project Exception
+    = stylesheet_link_tag :application
+    = javascript_include_tag :application
+
+  %body
+    #header
+      #welcome
+      %h3= link_to("Intfocus Project", '/')
+    %center
+      %p.flash_exception#msg= exception.to_s.html_safe
+
+  %script
+    :plain
+      document.observe("dom:loaded", function() {
+        new Effect.Move("msg", { x:0, y:-50, mode:"relative", fps:100, duration:0.15, afterFinishInternal: function(effect) {
+          new Effect.Move("msg", { x:0, y:50, mode:"relative", fps:100, duration:0.15, afterFinishInternal: function(effect) {
+            new Effect.Move("msg", { x:0, y:-25, mode:"relative", fps:100, duration:0.15, afterFinishInternal: function(effect) {
+              new Effect.Move("msg", { x:0, y:25, mode:"relative", fps:100, duration:0.15 });
+            }});
+          }});
+        }});
+      });

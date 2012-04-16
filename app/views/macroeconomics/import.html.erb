@@ -1,0 +1,41 @@
+<% if @errors.present? %>
+  <h1>Failure</h1>
+  <ul>
+    <% @errors.each do |error| %>
+      <li>
+      Problems in line number <%= error[0] %>:
+      <% error[1].full_messages.each do |msg|%>
+        <p><%= msg %> </p>
+      <%end%>
+      </li>
+    <% end %>
+  </ul>
+<%else%>
+  <h1>Success to import <%= @macroeconomics.size %> macroeconomics</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Country Name</th>
+        <th>Year</th>
+        <th>Type</th>
+        <th>Created at</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @macroeconomics.each do |macroeconomic| %>
+        <tr>
+          <td><%= macroeconomic.id %></td>
+          <td><%= link_to macroeconomic.country, macroeconomic_path(macroeconomic) %></td>
+          <td><%= link_to macroeconomic.year, macroeconomic.year %></td>
+          <td>
+            <% macroeconomic.field_groups.each do |t| %>
+              <%= link_to t.label, field_group_path(t) %>
+            <% end %>
+          </td>
+          <td><%= macroeconomic.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

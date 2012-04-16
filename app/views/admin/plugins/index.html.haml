@@ -1,0 +1,9 @@
+= styles_for :plugin
+
+.title Plugins
+
+.list#plugins
+  - if @plugins.any?
+    = render :partial => "admin/plugins/plugin", :collection => @plugins
+  - else
+    = render "shared/empty"

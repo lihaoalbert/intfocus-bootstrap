@@ -1,0 +1,25 @@
+= styles_for :macroeconomic
+
+.title_tools
+  = link_to_inline(:create_macroeconomic, new_macroeconomic_path, :text => t(:create_macroeconomic)) << " | "
+  - if Setting.advanced_search_enabled
+    = link_to_inline(:advanced_search, advanced_search_macroeconomics_path, :text => t(:advanced_search)) << " | "
+  = link_to_inline(:options, options_macroeconomics_path, :text => t(:options))
+
+.title
+  %span#create_macroeconomic_title #{t :macroeconomics}
+  = image_tag("loading.gif", :size => "16x16", :id => "loading", :style => "display: none;")
+.remote#options{ hidden }
+.remote#advanced_search{ hidden_if(!params[:q]) }
+  - if @search
+    = render :partial => "advanced_search"
+.remote#create_macroeconomic{ hidden }
+
+.list#macroeconomics
+  - if @macroeconomics.any?
+    = render @macroeconomics
+  - else
+    = render "shared/empty"
+
+#paginate= render "shared/paginate"
+#export= render "shared/export"

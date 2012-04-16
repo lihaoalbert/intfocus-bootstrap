@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: comments
+#
+#  id               :integer         not null, primary key
+#  user_id          :integer
+#  commentable_id   :integer
+#  commentable_type :string(255)
+#  private          :boolean
+#  title            :string(255)     default("")
+#  comment          :text
+#  created_at       :datetime
+#  updated_at       :datetime
+#  state            :string(16)      default("Expanded"), not null
+#
+
+<% 
+  require "ffaker"
+  puts "Loading comments..."
+
+  commentable = %w(Account Campaign Contact Lead Opportunity) # Task
+  for i in (1 .. rand(250) + 500) do
+%>
+comment_<%= i %>:
+  id               : <%= i %>
+  user_id          : <%= rand(8) + 1 %>
+  commentable_id   : <%= rand(100) + 1 %>
+  commentable_type : <%= commentable.sample %>
+  comment          : <%= Faker::Lorem::paragraph(rand(10) + 1) %>
+<% end %>

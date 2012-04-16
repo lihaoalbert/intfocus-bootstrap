@@ -1,0 +1,36 @@
+= styles_for :fields
+
+.title
+  %span#create_field_title= t(:admin_tab_fields)
+
+.info= t(:admin_fields_info).html_safe
+
+.inline_tabs
+  %ul
+    - Field::KLASSES.each do |klass|
+      %li{ "data-tab-class" => klass.name.downcase, :class => ("selected" if klass == Contact) }
+        = link_to t(klass.name.downcase), "#"
+
+- Field::KLASSES.each do |klass|
+  - asset = klass.name.downcase
+  .fields{ :id => "#{asset}_section", :style => ("display: none;" if klass != Contact) }
+
+    - create_form_id = "#{asset}_create_field_group"
+
+    .title_tools
+      = link_to_inline(create_form_id, new_admin_field_group_path(:klass_name => klass.name), :text => t(:create_field_group))
+
+    .title
+      = t(asset)
+
+    .remote{ hidden.merge(:id => create_form_id) }
+
+    - container_id = "#{asset}_field_groups"
+    .list{ :id => container_id }
+      = render :partial => "admin/field_groups/field_group", :collection => klass.field_groups, :locals => {:asset => asset, :klass => klass}
+
+    - group_list_ids = klass.field_groups.map {|field_group| dom_id(field_group, :fields)}
+    - klass.field_groups.each do |field_group|
+      = sortable_element(dom_id(field_group, :fields), :url => sort_admin_fields_path(:field_group_id => field_group.id), :containment => group_list_ids, :dropOnEmpty => true)
+
+    = sortable_element(container_id, :url => sort_admin_field_groups_path(:asset => asset), :tag => :div)
