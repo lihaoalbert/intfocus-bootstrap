@@ -170,6 +170,24 @@ class MacroeconomicsController < EntitiesController
     render :index
   end
 
+# import test
+  def imexport
+    @fulltext = params[:fulltext]
+    @search = Account.search do
+      fulltext params[:fulltext].to_s
+       # fields(:title)
+       #with :testid, [1,111]
+      #end
+      #with(:created_at).between((params[:start_date]== "" ? '1970-01-01':params[:start_date])..(params[:end_date]== "" ? Time.now.strftime('%Y-%m-%d') : params[:end_date]))
+      #fulltext '中' do
+        #with :id, 3
+      #end
+
+      #with :title, '的'
+      order_by(:created_at, :desc)
+    end
+
+  end
 
 # import test
   def export

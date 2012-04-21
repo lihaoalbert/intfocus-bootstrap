@@ -1,0 +1,55 @@
+<div class="dtree" style="border: 0px solid #cccccc; background-color: #f3f3f3; padding: 5px; width: 100%;">
+	
+	<p><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></p>
+	<script language="javascript">
+		d = new dTree('d','.','testForm');
+		d.add('0','-1','用户');
+		<% @users.each do |u|%>
+		<%= "d.add('#{u.id}','0','#{u.login_id}')"%>
+		<% end %>
+
+		document.write(d);
+	</script>
+          	     
+	<script type="text/javascript">
+		function submitForm(){
+			var ids = "";
+			var text = "";
+			<%= "text = text + '#{SimpleUser.all.to_json}'" %>
+			var data = text.replace(/&quot;/g,"\"");
+			var dataObj=JSON.parse(data);
+			var form = document.getElementById("testForm");
+			for (var i=0; i<form.elements.length; i++) 
+			{
+				var element = form.elements[i];
+				if (element.name == "id" && element.type=='checkbox')
+				{
+					if( element.checked == true )
+					{
+						ids = ids + element.value + ",";
+						for(p=0; p<dataObj.length; p++)
+						{
+							if(dataObj[p].id == element.value)
+			   			 	{
+			   			 		$("#lstAllSubjects option[value='" + element.value + "']", window.opener.document ).remove();
+   								$("#lstAllSubjects", window.opener.document ).append("<option value='" + element.value + "'>" + dataObj[p].login_id + "</option>");
+			   			 	}
+			   			 }
+					}
+				}
+			}	
+			//alert("ids = " + ids);
+			//window.returnValue='True';
+   			
+   			//window.parent.closeDialog();
+   			//$("#lstAllSubjects option[value='4']", window.opener.document ).remove();
+   			//$("#lstAllSubjects", window.opener.document ).append("<option value='4'>444</option>");
+   			window.close();
+   			window.parent.top.close();
+   			//window.parent.top.$("#lstAllSubjects").append("<option value='val'>222</option>");;
+		}
+		
+	</script>
+	<input type="button" value="提 交" onClick="submitForm()"/>
+
+</div>

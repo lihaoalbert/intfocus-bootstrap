@@ -1,0 +1,393 @@
+  <%= stylesheet_link_tag	 "/stylesheets/fileuploader.css"%>
+  <%= stylesheet_link_tag    "/stylesheets/themes/base/jquery.ui.all.css" %>
+  <%= stylesheet_link_tag    "/stylesheets/dtree.css" %>
+  <%= javascript_include_tag "/development-bundle/jquery-1.7.1.js" %>
+  <%= javascript_include_tag "/development-bundle/ui/jquery.ui.core.js" %>
+  <%= javascript_include_tag "/development-bundle/ui/jquery.ui.widget.js" %>
+  <%= javascript_include_tag "/development-bundle/ui/jquery.ui.datepicker.js" %>
+  <%= javascript_include_tag "/development-bundle/ui/jquery.ui.tabs.js" %>
+  <%= javascript_include_tag "/development-bundle/dtree.js" %>
+  
+<%= hidden_field_tag 'doc_id', @folderid %>
+<div align="right">
+	<%= button_tag '保存', {:id => 'save', :type => 'button'} %>
+	<%= button_tag '取消', {:id => 'close', :type => 'button'} %>
+</div>
+<div class="demo">
+
+<div id="tabs_i">
+	<ul>
+		<li><a href="#tabs-1">基本资料</a></li>
+		<li><a href="#tabs-2">管理权限</a></li>
+		<li><a href="#tabs-3">文件审核</a></li>
+	</ul>
+	<div id="tabs-1">
+		<ul>
+			<li style="float: left"><%= label_tag 'txtfn', '文件夹名称：'%></li>
+			<li><%= text_field_tag 'fn', @folder.displayname, :disabled => true %></li>
+			
+			<li><%= label_tag 'chkisdc', '本文件夹仅限上述知识类型'%></li>
+			<li>当文件放进此文件夹时</li>
+			<li style="float: left"><%= check_box_tag 'chkeas', '', (@folder.auto_description == 1 ? true : false) %></li>
+			<li><%= label_tag 'chkeas', '自动进行摘要撷取'%></li>
+			<li style="float: left"><%= check_box_tag 'chkeke', '', (@folder.auto_keywords == 1 ? true : false) %></li>
+			<li><%= label_tag 'chkeke', '自动进行关键字词萃取'%></li>
+			<li style="float: left"><%= check_box_tag 'chkac', '', (@folder.allow_categorize == 1 ? true : false) %></li>
+			<li><%= label_tag 'chkac', '启用分类机制'%></li>
+			<li style="float: left"><%= check_box_tag 'chkeac', '', (@folder.allow_discussing == 1 ? true : false) %></li>
+			<li><%= label_tag 'chkeac', '系统预先自动分类'%></li>
+		</ul>
+	</div>
+	<div id="tabs-2">
+		<ul>
+			<li>允许下列使用者/群组/角色 </li>
+			<li>
+				<%= select_tag 'lstAllSubjects', @lstas.html_safe, {:size => 5, :style => "width:250px"}%>
+				<%= select_tag 'fp', '', {:size=>'10', :style=>'display: none;'}%>
+				<%= select_tag 'dp', '', {:size=>'10', :style=>'display: none;'}%>
+			</li>
+			<li style="float: left"><%= link_to '<img src="/images/icon-add.gif">加入'.html_safe, {:action => "userfolder"}, :target => "_blank" %></li>
+			<li><%= link_to '<img src="/images/icon-delete.gif">移除'.html_safe,'#', :id => 'btnRemoveSelectedSubject' %></li>
+			<li style="float: left"><%= check_box_tag 'chkfcvf', '1'	%></li>
+			<li style="float: left"><%= label_tag 'chkfcvf', '浏览'%></li>
+			<li style="float: left"><%= check_box_tag 'chkfcuf', '4' %></li>
+			<li style="float: left"><%= label_tag 'chkfcuf', '修改'%></li>
+			<li style="float: left"><%= check_box_tag 'chkfcdf', '8' %></li>
+			<li><%= label_tag 'chkfcdf', '删除 此文件夹 '%></li>
+			<li style="float: left"><%= check_box_tag 'chkfcacf', '2' %></li>
+			<li><%= label_tag 'chkfcacf', '在此文件夹中建立子文件夹'%></li>
+			<li style="float: left">在此文件夹 </li>
+			<li style="float: left"><%= check_box_tag 'chkdcrd', '1' %></li>
+			<li style="float: left"><%= label_tag 'chkdcrd', '阅读'%></li>
+			<li style="float: left"><%= check_box_tag 'chkdcad', '2' %></li>
+			<li style="float: left"><%= label_tag 'chkdcad', '新增'%></li>
+			<li style="float: left"><%= check_box_tag 'chkdcud', '4' %></li>
+			<li style="float: left"><%= label_tag 'chkdcud', '修改'%></li>
+			<li style="float: left"><%= check_box_tag 'chkdcdld', '8' %></li>
+			<li style="float: left"><%= label_tag 'chkdcdld', '下载'%></li>
+			<li style="float: left"><%= check_box_tag 'chkdcdd', '16' %></li>
+			<li><%= label_tag 'chkdcdd', '删除 文件'%></li>
+		</ul>
+	</div>
+	<div id="tabs-3">
+		<ul>
+			<li style="float: left"><%= check_box_tag 'wfCreateRule' %></li>
+			<li><%= label_tag 'wfCreateRule', '文件新增时 ' %></li>
+			<li><%= label_tag 'wfCreateAuditors', '审核者' %></li>
+			<li><%= select_tag 'wfCreateAuditors', "<option>David</option><option>David1</option>".html_safe, {:size => 5, :style => "width:250px"}%></li>
+			<li style="float: left"><%= link_to '<img src="/images/icon-add.gif">加入'.html_safe%></li>
+			<li><%= link_to '<img src="/images/icon-delete.gif">移除'.html_safe%></li>
+			<li><hr /></li>
+			<li style="float: left"><%= check_box_tag 'wfUpdateRule'%></li>
+			<li><%= label_tag 'wfUpdateRule', '文件编辑修改时'%></li>
+			<li><%= label_tag '', '审核者' %></li>
+			<li><%= select_tag 'wfUpdateAuditors', "<option>David</option><option>David1</option>".html_safe, {:size => 5, :style => "width:250px"}%></li>
+			<li style="float: left"><%= link_to '<img src="/images/icon-add.gif">加入'.html_safe%></li>
+			<li><%= link_to '<img src="/images/icon-delete.gif">移除'.html_safe%></li>
+			<li><hr /></li>
+			<li style="float: left"><%= check_box_tag 'wfDeleteRule'%></li>
+			<li><%= label_tag 'wfDeleteRule', '文件删除时'%></li>
+			<li><%= label_tag '', '审核者' %></li>
+			<li><%= select_tag 'wfDeleteAuditors', "<option>David</option><option>David1</option>".html_safe, {:size => 5, :style => "width:250px"}%></li>
+			<li style="float: left"><%= link_to '<img src="/images/icon-add.gif">加入'.html_safe%></li>
+			<li><%= link_to '<img src="/images/icon-delete.gif">移除'.html_safe%></li>
+			<li><hr /></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		var gcs;
+		$("#tabs_i").tabs();
+		
+		$("#save").click(function(){
+			var doc_id = $("#doc_id").val();
+			var drpdcid = $("#drpdc").val();
+			var isdc_type = 0;
+		    var chkeas_type = 0;
+		    var chkeke_type = 0;
+		    var chkac_type = 0;
+		    var chkeac_type = 0;
+			var fpnum = 0;
+			var dpnum = 0;
+			var fpdata = "";
+			var dpdata = "";
+			//
+			$("#lstAllSubjects").children().each(function(){
+				var pid = $(this).val();
+				var pname = $(this).text();
+				//alert($(this).text());
+				//alert($(this).val());
+				$("#fp").children("option[parentid='" + pid + "'][value!='0']").each(function(){
+					fpnum = fpnum + parseInt($(this).text());
+				});
+				if(fpnum > 0)
+				{
+					fpdata = fpdata + pname + "|" + pid + "|" + fpnum + "^"
+				}
+				fpnum = 0;
+				$("#dp").children("option[parentid='" + pid + "'][value!='0']").each(function(){
+					dpnum = dpnum + parseInt($(this).text());
+				});
+				if(dpnum > 0)
+				{
+					dpdata = dpdata + pname + "|" + pid + "|" + dpnum + "^"
+				}
+				dpnum = 0;
+			});
+			fpdata = fpdata.substring(0,fpdata.length - 1);
+			dpdata = dpdata.substring(0,dpdata.length - 1);
+			//alert(drpdcid);
+			if($("#isdc").attr('checked')!=undefined) 
+			{
+				isdc_type = 1
+			}
+			if($("#chkeas").attr('checked')!=undefined) 
+			{
+				chkeas_type = 1
+			}
+			if($("#chkeke").attr('checked')!=undefined) 
+			{
+				chkeke_type = 1
+			}
+			if($("#chkac").attr('checked')!=undefined) 
+			{
+				chkac_type = 1
+			}
+			if($("#chkeac").attr('checked')!=undefined) 
+			{
+				chkeac_type = 1
+			}
+			var strhost = window.location.host;
+			var strprotocol = window.location.protocol;
+			var strurl = strprotocol + "//" + strhost + "/folders/updatefolder";
+			$.ajax({
+				type: 'POST',
+				//url: 'http://192.168.186.134:3000/messages/save_update',
+				url: strurl,
+				data: {
+					"doc_id":doc_id,
+					"drpdcid":drpdcid,
+					"isdc_type":isdc_type,
+					"chkeas_type":chkeas_type,
+					"chkeke_type":chkeke_type,
+					"chkac_type":chkac_type,
+					"chkeac_type":chkeac_type,
+					"fpdata":fpdata,
+					"dpdata":dpdata 
+				},
+				contentType: 'multipart/form-data',
+				datatype: 'json'
+				//没有页面请注释下面页面数据返回
+				//success:function(data)
+				//{
+				//	alert(data);
+				//	//location.reload();
+				//},
+				//error:function(xhr,r,e)
+				//{
+				//	alert(e)
+				//}
+			});
+			
+		});
+		
+		//删除选中的用户
+		$("#btnRemoveSelectedSubject").click(function(){
+			//var test = $("#lstAllSubjects").val();
+			//alert(test);
+			$("#lstAllSubjects").find("option:selected").remove();
+		});
+		
+		//初始化选中第一用户
+		$("#lstAllSubjects ").get(0).selectedIndex=0;
+		//初始化添加文件夹权限
+		$("#fp").append("<%= @fp.html_safe %>");
+		restore(getCurrentSubject(),"folder");
+		//初始化添加文件权限
+		$("#dp").append("<%= @dp.html_safe %>");
+		restore(getCurrentSubject(),"document");
+		
+		//用户控制权限
+		$("#lstAllSubjects").change(function(){
+			reset("document");
+			reset("folder");
+			gcs = $(this).val();
+			restore(getCurrentSubject(),"folder");
+			restore(getCurrentSubject(),"document");
+		});
+		
+		//文件夹浏览
+		//fpar(gcs,"chkfcvf");
+		$("#chkfcvf").click(function(){
+			if($("#chkfcvf").attr("checked"))
+			{
+				$("#fp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#fp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		
+		//文件夹修改
+		//fpar(gcs,"chkfcuf");
+		$("#chkfcuf").click(function(){
+			if($("#chkfcuf").attr("checked"))
+			{
+				$("#fp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#fp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		//文件夹删除
+		//fpar(gcs,"chkfcdf")
+		$("#chkfcdf").click(function(){
+			if($("#chkfcdf").attr("checked"))
+			{
+				$("#fp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#fp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		//文件阅读
+		//dpar(gcs,"chkdcrd");
+		$("#chkdcrd").click(function(){
+			if($("#chkdcrd").attr("checked"))
+			{
+				$("#dp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#dp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		
+		//文件新增
+		//dpar(gcs,"chkdcad");
+		$("#chkdcad").click(function(){
+			if($("#chkdcad").attr("checked"))
+			{
+				$("#dp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#dp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		//文件修改
+		//dpar(gcs,"chkdcud");
+		$("#chkdcud").click(function(){
+			if($("#chkdcud").attr("checked"))
+			{
+				$("#dp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#dp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		//文件下载
+		//dpar(gcs,"chkdcdld");
+		$("#chkdcdld").click(function(){
+			if($("#chkdcdld").attr("checked"))
+			{
+				$("#dp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#dp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		//文件删除
+		//dpar(gcs,"chkdcdd");
+		$("#chkdcdd").click(function(){
+			if($("#chkdcdd").attr("checked"))
+			{
+				$("#dp").append("<option value='" + $(this).val() + "' parentid='" + getCurrentSubject() + "'>" + $(this).val() + "</option>");
+			}
+			else
+			{
+				$("#dp option[value='" + $(this).val() + "'][ parentid='" + getCurrentSubject() + "']").remove();
+			}
+		});
+		//对文件操作(因为全局所以失败)暂时不用
+		function fpar(subject,strcontroll)
+		{
+			$("#" + strcontroll).click(function(){
+				if($("#" + strcontroll).attr("checked"))
+				{
+					$("#fp").append("<option value='" + $("#" + strcontroll).val() + "' parentid='" + subject + "'>" + $("#" + strcontroll).val() + "</option>");
+				}
+				else
+				{
+					$("#fp option[value='" + $("#" + strcontroll).val() + "']").remove();
+				}
+			});
+		}
+		
+		//对文件夹操作(因为全局所以失败)暂时不用
+		function dpar(subject,strcontroll)
+		{
+			$("#" + strcontroll).click(function(){
+				if($("#" + strcontroll).attr("checked"))
+				{
+					$("#dp").append("<option value='" + $("#" + strcontroll).val() + "' parentid='" + subject + "'>" + $("#" + strcontroll).val() + "</option>");
+				}
+				else
+				{
+					$("#dp option[value='" + $("#" + strcontroll).val() + "']").remove();
+				}
+			});
+		}
+		
+		//清空权限选择
+		function reset(t){
+			var expression = "";
+			if(t=="folder"){
+				expression = "input[type=checkbox][id^=chkf]";
+			}else{
+				expression = "input[type=checkbox][id^=chkd]";
+			}
+			$(expression).each(function(i){
+				this.checked = false;
+			});
+		}
+		//被选中的用户
+		function getCurrentSubject(){
+			return $("#lstAllSubjects > option:selected").val();
+		} 
+		
+		function restore(subject,t)
+		{
+			var expression = "";
+			var target;
+			if(t=="folder")
+			{
+				expression = "input[type=checkbox][id^=chkf]";
+				target = "#fp";
+			}
+			else
+			{
+				expression = "input[type=checkbox][id^=chkd]";
+				target = "#dp";
+			}
+			var c = $(expression);
+			var s = $(target);
+			s.children("option[parentid='" + subject + "'][value!='0']").each(function(){
+				var u = $(this).text();
+				//alert(u);
+				c.each(function(){
+					if(this.value==u){
+						this.checked =true;
+					}
+				});
+			});
+		}
+	});
+</script>

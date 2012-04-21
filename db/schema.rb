@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120416130937) do
+ActiveRecord::Schema.define(:version => 20120419185428) do
 
   create_table "account_contacts", :force => true do |t|
     t.integer  "account_id"
@@ -126,6 +126,28 @@ ActiveRecord::Schema.define(:version => 20120416130937) do
   add_index "campaigns", ["assigned_to"], :name => "index_campaigns_on_assigned_to"
   add_index "campaigns", ["user_id", "name", "deleted_at"], :name => "index_campaigns_on_user_id_and_name_and_deleted_at", :unique => true
 
+  create_table "categories", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "uuid",        :limit => 36
+    t.integer  "user_id"
+    t.integer  "assigned_to"
+    t.string   "name",        :limit => 64, :default => "",       :null => false
+    t.string   "access",      :limit => 8,  :default => "Public"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+  end
+
+  create_table "category_objects", :force => true do |t|
+    t.integer  "category_id"
+    t.integer  "solr_index_id"
+    t.integer  "asset_id"
+    t.string   "asset_type"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "commentable_id"
@@ -179,6 +201,13 @@ ActiveRecord::Schema.define(:version => 20120416130937) do
   add_index "contacts", ["assigned_to"], :name => "index_contacts_on_assigned_to"
   add_index "contacts", ["user_id", "last_name", "deleted_at"], :name => "id_last_name_deleted", :unique => true
 
+  create_table "default_doc_privileges", :force => true do |t|
+    t.integer  "resource_id"
+    t.text     "data"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "emails", :force => true do |t|
     t.string   "imap_message_id",                                       :null => false
     t.integer  "user_id"
@@ -231,6 +260,46 @@ ActiveRecord::Schema.define(:version => 20120416130937) do
 
   add_index "fields", ["field_group_id"], :name => "index_fields_on_field_group_id"
   add_index "fields", ["name"], :name => "index_fields_on_name"
+
+  create_table "fld_privileges", :force => true do |t|
+    t.integer  "resource_id"
+    t.text     "data"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "folder_objects", :force => true do |t|
+    t.integer  "folder_id"
+    t.integer  "solr_index_id"
+    t.integer  "asset_id"
+    t.string   "asset_type"
+    t.datetime "deleted_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "folders", :force => true do |t|
+    t.integer  "parent_id"
+    t.string   "uuid",                     :limit => 36
+    t.integer  "user_id"
+    t.integer  "assigned_to"
+    t.string   "name",                     :limit => 64, :default => "",       :null => false
+    t.string   "displayname"
+    t.integer  "foldertype"
+    t.integer  "is_single_document_class"
+    t.integer  "document_class_id"
+    t.integer  "allow_categorize"
+    t.integer  "allow_discussing"
+    t.integer  "auto_categorize"
+    t.integer  "auto_keywords"
+    t.integer  "auto_description"
+    t.integer  "sort_order"
+    t.integer  "folder_state"
+    t.string   "access",                   :limit => 8,  :default => "Public"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
+  end
 
   create_table "leads", :force => true do |t|
     t.integer  "user_id"
@@ -374,6 +443,21 @@ ActiveRecord::Schema.define(:version => 20120416130937) do
     t.string   "background_info"
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
+  end
+
+  create_table "solr_indices", :force => true do |t|
+    t.string   "uuid",        :limit => 36
+    t.integer  "user_id"
+    t.integer  "asset_id"
+    t.string   "asset_type"
+    t.string   "title"
+    t.text     "summary"
+    t.text     "body"
+    t.string   "access",      :limit => 8,  :default => "Public"
+    t.integer  "clicks"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.integer  "comment_cnt"
   end
 
   create_table "taggings", :force => true do |t|

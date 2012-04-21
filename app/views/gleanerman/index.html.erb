@@ -1,0 +1,33 @@
+<div>
+	<div>
+		<table cellpadding="1" cellspacing="1" border="1">
+			<thead>
+				<td>规则名称</td>
+				<td>规则来源</td>
+				<td>规则关键字</td>
+				<td>是否启动</td>
+				<td>修改/删除</td>
+				<td>获取</td>
+			</thead>
+			<% @gmall.each do |g|%>
+			<tbody>
+				<td><%= g.gm_name %></td>
+				<% if g.gleanerman then %>
+				<td><%= g.gleanerman.name %></td>
+				<% else %>
+				<td></td>
+				<% end %>
+				<td><%= g.keyword %></td>
+				<td><%= g.state == 1 ? '启动':'停止' %></td>
+				<td><%= link_to '修改', :controller => "gleanerman", :action => "edit", :id => g.id %>
+					<%= link_to '删除', :controller => "gleanerman", :action => "delete", :id => g.id %>
+				</td>
+				<td><%= link_to '获取', :controller => "gleanerman", :action => "getdata", :id => g.id %></td>
+			</tbody>
+			<% end %>
+		</table>
+	</div>
+	<div id = "add">
+		<%= link_to "新建规则", :controller => "gleanerman", :action => "new" %>
+	</div>
+</div>

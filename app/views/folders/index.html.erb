@@ -1,0 +1,45 @@
+<div id = "folderlist">
+	<div class="divcaption clearfix">
+		<span class="left"> 目前位置：知识库 </span>
+	</div>
+<div>
+	<div class="divcontent">
+		<% @folders.each do |f|%>
+		<p id="catbar" class="catbar">
+			<img align="absmiddle" border="0" src="/images/class_open.gif">
+			<a href="javascript:writeUI(3);"><%= @folderpath.html_safe %></a>
+		</p>
+		<% end %>
+	</div>
+</div>
+<div id = "addfolder">
+	<%= form_tag :action => "createfolder", :id => @folderid do %>
+		<ul>
+			<li><%= label_tag 'dn', '子文件夹' %></li>
+			<li><%= text_field_tag 'dn' %></li>
+			<li><%= submit_tag '确定' %></li>
+			<li><%= link_to '修改当前文件夹', :action => 'editfolder', :id => @folderid %></li>
+		</ul>
+	<% end %>
+</div>
+<div id = "listfolder">
+	<div><span>子文件夹</span></div>
+	<div>
+		<table id="categories" class="categories">
+			<tbody>
+				<tr>
+					<% @foldersun.each do |fs| %>
+					<td valign="top">
+						<img align="absmiddle" border="0" src="/images/class_close.gif">
+						<a href="/folders/index?id=<%= fs.id %>"><%= fs.name %></a>
+					</td>
+					<% end %>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id = "documentlist">
+	
+</div>

@@ -1,0 +1,12 @@
+<h2 class="demoHeaders">Accordion</h2>
+<div id="accordion">
+	<% for i in 0 ... @items.size %>
+		<h3><a href="#"><%= @items[i].title.split("-")[0].html_safe %>&nbsp;&nbsp;</a></h3>
+		<div>
+			<div id=""><h3><%= @items[i].title.split("-")[0].html_safe %></h3></div>
+			<div id=""><%= @items[i].title.split("-")[1] %>&nbsp;&nbsp;<%= @items[i].date.strftime("%y-%m-%d") %></div>
+			<div><a href=<%= @items[i].link %>>原始连接</a></div>
+			<div><%= @items[i].description.gsub(/<\/?font[^>]*>/){|html| ""}.html_safe %></div>
+		</div>
+	<% end %>
+</div>

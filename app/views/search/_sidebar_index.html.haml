@@ -1,0 +1,20 @@
+.filters#filters
+  = render "search"
+  - Setting.macroeconomic_country.each do |key|
+    .check_box{:style => "border-bottom: 1px silver dotted;"}
+      %div{:style => "float:right;"}
+        = @macroeconomic_country_total[key]
+      = macroeconomic_country_checbox(key, @macroeconomic_country_total[key])
+      = label_tag(key, t(key))
+
+  .check_box{:style => "border-bottom: 1px silver dotted;"}
+    %div{:style => "float:right;"}
+      = @macroeconomic_country_total[:other]
+    = macroeconomic_country_checbox("other", @macroeconomic_country_total[:other])
+    = label_tag(:other, t(:other))
+
+  .check_box
+    %div{:style => "float:right;"}
+      %b= @macroeconomic_country_total[:all]
+    %b #{t :total_macroeconomics}
+  = hook(:index_macroeconomic_sidebar_bottom, self)

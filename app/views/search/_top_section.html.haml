@@ -1,0 +1,20 @@
+= hook(:macroeconomic_top_section, self, :f => f) do
+  .section
+    %table
+      %tr
+        %td(colspan="5")
+          .label.top.req #{t :country}:
+          = f.select :country, Setting.unroll(:macroeconomic_country), { :selected => (@macroeconomic.country || "china").to_sym }, { :style => "width:250px" }
+      %tr
+        %td
+          .label #{t :year}:
+          = f.text_field :year, :style => "width:110px"
+        %td= spacer
+        %td
+          
+        %td= spacer
+        %td
+
+      = render :partial => "/shared/tags", :locals => {:f => f, :span => 5}
+
+      = hook(:macroeconomic_top_section_bottom, self, :f => f)

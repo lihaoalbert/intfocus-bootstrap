@@ -1,0 +1,6 @@
+unless @search_results.blank?
+  page[:search_results].replace_html render @search_results
+else
+  page[:search_results].replace_html :partial => "shared/empty"
+end
+page[:paginate].replace_html :partial => "shared/paginate"

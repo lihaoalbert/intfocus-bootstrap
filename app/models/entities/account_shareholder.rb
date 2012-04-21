@@ -27,4 +27,9 @@
 
 
 class AccountShareholder < ActiveRecord::Base
+  belongs_to :account
+  belongs_to :shareholder
+  validates_presence_of :account_id, :shareholder_id
+
+  has_paper_trail
 end

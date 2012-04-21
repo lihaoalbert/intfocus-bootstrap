@@ -42,6 +42,8 @@ class Account < ActiveRecord::Base
   belongs_to  :assignee, :class_name => "User", :foreign_key => :assigned_to
   has_many    :account_contacts, :dependent => :destroy
   has_many    :contacts, :through => :account_contacts, :uniq => true
+  has_many    :account_shareholders, :dependent => :destroy
+  has_many    :shareholders, :through => :account_shareholders, :uniq => true
   has_many    :account_opportunities, :dependent => :destroy
   has_many    :opportunities, :through => :account_opportunities, :uniq => true, :order => "opportunities.id DESC"
   has_many    :tasks, :as => :asset, :dependent => :destroy#, :order => 'created_at DESC'
@@ -76,6 +78,10 @@ class Account < ActiveRecord::Base
   validate :users_for_shared_access
   before_save :nullify_blank_category
 
+#  searchable do
+#    integer :id
+#    text :name
+#  end
   # Default values provided through class methods.
   #----------------------------------------------------------------------------
   def self.per_page ; 20     ; end
@@ -87,6 +93,29 @@ class Account < ActiveRecord::Base
     return "" unless self[:billing_address]
     location = self[:billing_address].strip.split("\n").last
     location.gsub(/(^|\s+)\d+(:?\s+|$)/, " ").strip if location
+  end
+
+  # Backend handler for [Create New Contact] form (see contact/create).
+  #----------------------------------------------------------------------------
+  def save_with_shareholder_and_permissions(params)
+    shareholder = Shareholder.create_or_select_for(self, params[:shareholder], params[:users])
+    self.account_shareholder = AccountShareholder.new(:shareholder => shareholder, :account => self) unless shareholder.id.blank?
+    self.save_with_permissions(params[:users])
+  end
+
+  # Backend handler for [Update Contact] form (see contact/update).
+  #----------------------------------------------------------------------------
+  def update_with_shareholder_and_permissions(params)
+    if params[:shareholder][:id] == "" || params[:shareholder][:name] == ""
+      self.shareholder = nil # Account is not associated with the account anymore.
+    else
+      shareholder = Shareholder.create_or_select_for(self, params[:shareholder], params[:users])
+      if self.shareholder != shareholder and shareholder.id.present?
+        self.account_shareholder = AccountShareholder.new(:shareholder => shareholder, :account => self)
+      end
+    end
+    self.reload
+    self.update_with_permissions(params[:account], params[:users])
   end
 
   # Attach given attachment to the account if it hasn't been attached already.

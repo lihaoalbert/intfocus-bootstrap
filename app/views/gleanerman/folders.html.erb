@@ -1,0 +1,61 @@
+<div class="dtree" style="border: 0px solid #cccccc; background-color: #f3f3f3; padding: 5px; width: 100%;">
+	<script language="javascript">
+	<%
+	   def each_child(menu)
+	       if(menu.nil? or menu.childs.nil?)
+	           return;
+	       end %>
+	        <%= "d.add(#{menu.id},#{menu.parentid.nil? ? "0" : menu.parentid},'#{menu.name}');" %>
+	        <%
+	       menu.childs.each do |m|
+	           each_child(m);
+	       end
+	   end
+	%>
+		d = new dTree('d','.','testForm');
+		d.add('0','-1','文件夹');
+		<%
+		   @folders.each do |m|
+		    each_child(m)
+		   end
+		%>
+
+		document.write(d);
+	</script>
+          	     
+	<script type="text/javascript">
+		function submitForm(){
+			var ids = "";
+			var names = "";
+			var text = "";
+			<%= "text = text + '#{Folder.all.to_json}'" %>
+			var data = text.replace(/&quot;/g,"\"");
+			var dataObj=JSON.parse(data);
+			var form = document.getElementById("testForm");
+			for (var i=0; i<form.elements.length; i++) {
+				var element = form.elements[i];
+				if (element.name == "id" && element.type=='checkbox'){
+					if( element.checked == true ){
+						ids = ids + element.value + ",";
+						for(p=0; p<dataObj.length; p++)
+						{
+							if(dataObj[p].id == element.value)
+			   			 	{
+			   			 		names = names + dataObj[p].name + ",";
+			   			 	}
+			   			 }
+					}
+				}
+			}
+			
+			ids = ids.substring(0, ids.length-1);
+			names = names.substring(0, names.length-1);	
+			$("#folderPath", window.opener.document).val(names);
+			$("#folder_path_h", window.opener.document ).val(ids);
+			window.close();
+   			window.parent.top.close();
+		}
+	</script>
+	<input type="button" value="提 交" onClick="submitForm()"/>
+
+</div>

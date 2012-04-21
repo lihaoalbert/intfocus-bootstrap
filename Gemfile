@@ -36,6 +36,12 @@ gem 'chinese_pinyin'
 gem 'spreadsheet'
 gem 'carrierwave'
 
+# search engine
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+gem 'progress_bar'
+
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'steak', :require => false

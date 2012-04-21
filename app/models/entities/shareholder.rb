@@ -34,10 +34,13 @@
 class Shareholder < ActiveRecord::Base
   belongs_to  :user
   belongs_to  :assignee, :class_name => "User", :foreign_key => :assigned_to
-  has_many    :account_shareholder, :dependent => :destroy
-  has_many    :account, :through => :account_shareholder, :uniq => true, :order => "accounts.id DESC"
+  has_many    :account_shareholders, :dependent => :destroy
+  has_many    :accounts, :through => :account_shareholders, :uniq => true, :order => "accounts.id DESC"
   has_many    :emails, :as => :mediator
 
+  scope :state, lambda { |filters|
+    where('group IN (?)' + (filters.delete('other') ? ' OR group IS NULL' : ''), filters)
+  }
   scope :created_by, lambda { |user| { :conditions => [ "user_id = ?", user.id ] } }
   scope :assigned_to, lambda { |user| { :conditions => ["assigned_to = ?", user.id ] } }
 
@@ -50,7 +53,7 @@ class Shareholder < ActiveRecord::Base
         "(upper(first_name) LIKE upper('%#{first}%') AND upper(last_name) LIKE upper('%#{last}%'))"
       }.join(" OR ")
     else
-      "upper(first_name) LIKE upper('%#{query}%') OR upper(last_name) LIKE upper('%#{query}%')"
+      "upper(name) LIKE upper('%#{query}%') OR upper(background_info) LIKE upper('%#{query}%')"
     end
     where("#{name_query} OR upper(email) LIKE upper(:m) OR upper(alt_email) LIKE upper(:m) OR phone LIKE :m OR mobile LIKE :m", :m => "%#{query}%")
   }
@@ -66,4 +69,33 @@ class Shareholder < ActiveRecord::Base
   validates_presence_of :first_name, :message => :missing_first_name
   validates_presence_of :last_name, :message => :missing_last_name if Setting.require_last_names
   validate :users_for_shared_access
+  before_save :nullify_blank_group
+  
+    # Class methods.
+  #----------------------------------------------------------------------------
+  def self.create_or_select_for(model, params, users)
+    if params[:id].present?
+      shareholder = Shareholder.find(params[:id])
+    else
+      shareholder = Shareholder.new(params)
+      if shareholder.access != "Lead" || model.nil?
+        shareholder.save_with_permissions(users)
+      else
+        shareholder.save_with_model_permissions(model)
+      end
+    end
+    account
+  end
+  
+  private
+  # Make sure at least one user has been selected if the account is being shared.
+  #----------------------------------------------------------------------------
+  def users_for_shared_access
+    errors.add(:access, :share_shareholder) if self[:access] == "Shared" && !self.permissions.any?
+  end
+
+  def nullify_blank_group
+    self.group = nil if self.group.blank?
+  end
+
 end

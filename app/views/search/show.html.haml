@@ -1,0 +1,18 @@
+= styles_for :task, :lead, :opportunity
+
+#confirm{ hidden }
+.title_tools#menu
+  = link_to_inline(:edit_macroeconomic, edit_macroeconomic_path(@macroeconomic), :text => t(:edit)) + " | "
+  = link_to_function(t(:delete) + '?', confirm_delete(@macroeconomic))
+.title#edit_macroeconomic_title= h(@macroeconomic.country)
+
+%div#edit_macroeconomic{ hidden }
+= render "comments/new", :commentable => @macroeconomic
+= render :partial => "shared/timeline", :collection => @timeline
+
+= hook(:show_macroeconomic_bottom, self) do
+
+  = render :partial => "versions/versions", :locals => {:object => @macroeconomic}
+
+  = load_select_popups_for(@macroeconomic, :tasks, :leads, :opportunities)
+

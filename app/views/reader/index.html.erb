@@ -1,0 +1,28 @@
+
+  <%= stylesheet_link_tag	"/development-bundle/themes/base/jquery.ui.all.css" %>
+  <%= javascript_include_tag	"/development-bundle/jquery-1.7.1.js" %>
+  <%= javascript_include_tag	"/development-bundle/ui/jquery.ui.core.js" %>
+  <%= javascript_include_tag	"/development-bundle/ui/jquery.ui.widget.js" %>
+  <%= javascript_include_tag	"/development-bundle/ui/jquery.ui.accordion.js" %>
+  <%= stylesheet_link_tag	"/development-bundle/demos/demos.css" %>
+  <%= javascript_include_tag	"/javascripts/rssread" %>
+  <%= stylesheet_link_tag	"/stylesheets/rssread" %>
+  <%= javascript_include_tag	"/javascripts/dtree.js" %>
+  <%= stylesheet_link_tag	"/stylesheets/dtree.css" %>
+<div>
+	<%= form_tag :action => 'index' do %>
+	<ul style="">
+		<li style="float: left;"><%= label_tag 'txtkeyword'%></li>
+		<li style="float: left;"><%= text_field_tag 'txtkeyword', @strkeyword %></li>
+		<li><%= button_tag 'Select'%></li>
+		<li style="float: left"><%= check_box_tag 'google', 'g', @google %></li>
+		<li style="float: left"><%= label_tag 'google', '谷歌新闻' %></li>
+		<li style="float: left"><%= check_box_tag 'baidu', 'b', @baidu %></li>
+		<li><%= label_tag 'baidu', '百度新闻' %></li>
+	</ul>
+	<br />
+	<% end %>
+</div>
+<div>
+	<%= render "list"%>
+</div>

@@ -1,0 +1,19 @@
+<div>
+	<%= form_for :gmsource do |g| %>
+	<div>
+		<%= g.label :name %><br />
+		<%= g.text_field :name, :class => 'textname' %>
+	</div>
+	<div>
+		<%= g.label :url %><br />
+		<%= g.text_field :url, :class => 'textname' %>
+	</div>
+	<div>
+		<%= g.label :gmsource_state %><%= g.check_box :gmsource_state %>
+	</div>
+	<div>
+		<%= g.submit %>
+	</div>
+	<% end %>
+</div>
+

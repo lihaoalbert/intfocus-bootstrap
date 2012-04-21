@@ -178,6 +178,7 @@ Rails.application.routes.draw do
       get  :field_group
       post :auto_complete
       post :redraw
+      post :imexport
       get :imexport
       get :export
       get :import_template
@@ -190,12 +191,20 @@ Rails.application.routes.draw do
       get :import_template
     end
   end  
-  match 'macroeconomics/import' => 'macroeconomics#import', :via => :post
-  
-  get 'macroeconomics/imexport'
-  get 'macroeconomics/export'
-  get 'macroeconomics/import_template'
-  #match 'products/import' => 'products#import', :via => :post
-  
+
+  resources :reader, :id => /\d+/ do
+    collection do
+      get  :index
+      post :index
+    end
+    member do
+      put  :attach
+      post :discard
+    end
+  end  
+
+
+
+  match ':controller(/:action(/:id))(.:format)'  
   
 end

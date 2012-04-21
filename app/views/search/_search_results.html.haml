@@ -1,0 +1,19 @@
+%li[search_results]{ highlightable(dom_id(search_results, :tools)) }
+  .strip{:class => search_results.object_type}= t(search_results.object_type)
+
+  .tools{ invisible, :id => dom_id(search_results, :tools) }
+    = link_to_edit(search_results) + " | "
+    = link_to_delete(search_results)
+
+  .indent
+    = link_to(search_results.title, search_results)
+    %tt
+      = t(:added_by, :time_ago => time_ago_in_words(search_results.created_at), :user => (search_results.user.id == @current_user.id ? t(:me) : search_results.user.full_name)) << " | "
+
+    - unless @current_user.preference[:search_resultss_outline] == "brief"
+      = render "search/metrics", :search_results => search_results
+      - if search_results.tag_list.present?
+        %dt
+          .tags= tags_for_index(search_results)
+
+      = hook(:search_results_bottom, self, :search_results => search_results)

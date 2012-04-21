@@ -7,6 +7,8 @@ You should download the template first
 <br />
 <%= link_to "Get Import Template", macroeconomics_import_template_path(:format => 'xls'), :class => "btn btn-primary" %>
 <br />
+
+
 <br />
 <h3>Import macroeconomics</h3>
 <%=form_tag('/macroeconomics/import', :multipart => true) %>
@@ -19,3 +21,13 @@ Please select a excel file to upload first
 </p>
 </form>
 
+<br/>
+<%=form_tag('/macroeconomics/imexport', :multipart => true) %>
+	<ul>
+		<li style="float: left; width: 200px;"><%= label_tag 'fulltext','Enter your keyword:'%></li>
+		<li><%= text_field_tag 'fulltext', @fulltext %></li>
+	</ul>
+<%= submit_tag "search", :class => 'btn btn-primary' %>
+
+</form>
+<%= @search.inspect %>

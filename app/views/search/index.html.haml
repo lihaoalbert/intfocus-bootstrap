@@ -1,0 +1,18 @@
+= styles_for :search
+
+.title_tools
+  = link_to_inline(:options, options_searchs_path, :text => t(:options))
+
+.title
+  %span#create_search_title #{t :searchs}
+  = image_tag("loading.gif", :size => "16x16", :id => "loading", :style => "display: none;")
+.remote#options{ hidden }
+
+.list#searchs
+  - if @search_results.any?
+    = render @search_results
+  - else
+    = render "shared/empty"
+
+#paginate= render "shared/paginate"
+#export= render "shared/export"

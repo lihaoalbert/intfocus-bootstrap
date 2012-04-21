@@ -1,0 +1,26 @@
+<div> 
+	<div id = "grid_list">
+		<table border="1" cellpadding="1" cellspacing="1">
+			<thead>
+				<td>来源名称</td>
+				<td>来源地址</td>
+				<td>是否启用</td>
+				<td>修改/删除</td>
+			</thead>
+			<% @gmsources.each do |g| %>
+			<tbody>
+				<td><%= g.name %></td>
+				<td><%= g.url %></td>
+				<td><%= g.gmsource_state==1 ? '启用':'停用' %></td>
+				<td>
+					<%= link_to "编辑", :controller => "gleanermansource", :action => "edit", :id => g.id %>
+					<%= link_to "删除", :controller => "gleanermansource", :action => "delete", :id => g.id %>
+				</td>
+			</tbody>
+			<% end %>
+		</table>
+	</div>
+	<div id = "add">
+		<%= link_to "新建数据来源", :controller => "gleanermansource", :action => "new" %>
+	</div>
+</div>

@@ -18,10 +18,11 @@ zh-CN:
   tab_dashboard: 摘要
   tab_tasks: 任务
   tab_campaigns: 战役
-  tab_leads: 线索 
-  tab_accounts: 账号
-  tab_contacts: 联系人
-  tab_opportunities: 机会
+  tab_leads: 新闻消息 
+  tab_accounts: 竞争对手
+  tab_contacts: 知识库
+  tab_opportunities: 报表
+  tab_macroeconomics: 宏观经济
 
   admin_tab_users: 用户
   admin_tab_settings: 设置
@@ -40,10 +41,10 @@ zh-CN:
   completed: 完成
   called_off: 取消
 
-  new: 新建
-  contacted: 已联系
-  converted: 已转换
-  rejected: 已拒绝
+  new: 未分派
+  contacted: 已分派
+  converted: 已入库
+  rejected: 已淘汰
 
   cold_call: 冷电话 
   conference: 会议
@@ -290,11 +291,11 @@ zh-CN:
 
   # Views -> Accounts.
   #----------------------------------------------------------------------------
-  account: 账号 
-  account_small: 短账号
-  accounts: 账号
+  account: 竞争对手 
+  account_small: 对手
+  accounts: 竞争对手
   accounts_options: 账号选项
-  accounts_small: 短账号
+  accounts_small: 对手
   assigned_to: 授予
   billing_address: 账单地址
   create_account: 创建账号
@@ -359,12 +360,12 @@ zh-CN:
   #----------------------------------------------------------------------------
   alt_email_small: 其它
   blog: Website/Blog
-  contact: 联系人
-  contact_small: 联系人
+  contact: 知识库
+  contact_small: 知识库
   contacts: 联系人
-  contacts_options: 联系人选项
-  contacts_small: 联系人
-  create_contact: 创建联系人
+  contacts_options: 知识库选项
+  contacts_small: 知识库
+  create_contact: 创建
   department: 部门
   department_small: '%{value} 部门'
   do_not_call: 不要打电话
@@ -392,22 +393,22 @@ zh-CN:
   convert_lead_text: 转换线索 %{value} 将会使其变成一个与现有或新建账号关联的联系人，线索状态自动设为已转换。
   create_lead: 创建线索
   create_opp_for_contact: 可以为 %{value} 联系人创建一个机会，需指定名称、当前阶段、预计结束日期、销售可能性、线索数量、折扣。
-  lead: 线索
+  lead: 新闻
   lead_info_small: 线索联系人
   lead_permissions_intro_private: 默认从战役复制权限或设为私有。以后可修改。
   lead_permissions_intro_public: 默认从战役复制权限或设为公有。以后可修改。
   lead_permissions_intro_shared: 默认从战役复制权限或设为与特定用户分享。以后可修改。
-  lead_small: 线索
+  lead_small: 新闻
   lead_status_small: 线索状态
-  lead_summary: 线索摘要
-  leads: 线索
-  leads_options: 线索选项
-  leads_small: 线索
+  lead_summary: 新闻摘要
+  leads: 新闻
+  leads_options: 新闻选项
+  leads_small: 新闻
   none: 无
   rating: 星级
   reject: 拒绝
   reject_lead_confirm: 确认拒绝此线索？
-  save_lead: 保存线索
+  save_lead: 保存新闻
   source: 源
   status: 状态
   total_leads: 线索总计
@@ -502,7 +503,7 @@ zh-CN:
   subject_account: 账号
   subject_campaign: 战役
   subject_contact: 联系人
-  subject_lead: 线索
+  subject_lead: 新消息
   subject_opportunity: 机会
   subject_task: 任务
   subject_comment: 备注

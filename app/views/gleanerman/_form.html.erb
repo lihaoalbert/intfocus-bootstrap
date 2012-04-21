@@ -1,0 +1,63 @@
+<div>
+	<div>
+		<%= label_tag 'gmname', '规则名称：' %><br />
+		<%= text_field_tag 'gmname', @gmname %>
+	</div>
+	<div>
+		<%= label_tag 'slsource', '数据源：' %><br />
+		<%= select_tag 'slsource', options_from_collection_for_select(@gms, "id", "name", @sourceid)%>
+	</div>
+	<div id = "txtkw">
+		<%= label_tag 'keyword', '关键字：' %><br />
+		<%= text_field_tag 'keyword', @keyword %>
+	</div>
+	<div id = "txtukw" style="display: none">
+		<%= label_tag 'usersource', '自定义数据源：' %><br />
+		<%= text_field_tag 'usersource', @keyword %>
+	</div>
+	<div>
+		<%= label_tag 'filters', '过滤条件：' %><br />
+		<%= text_area_tag 'filters', @filters, :rows => 10, :cols => 50 %>
+	</div>
+	<div>
+		<%= label_tag 'folderPath', '文件夹：' %><br />
+		<%= text_field_tag 'folderPath', @foldername %><%= link_to "<img src='/images/folder.png' alt='Folder'>".html_safe, {:action => "folders"}, :target => "_blank" %>
+		<%= hidden_field_tag 'folder_path_h', @fph %>
+	</div>
+	<div>
+		<%= check_box_tag 'state', '1', @state %><%= label_tag 'state', '是否启用' %>
+	</div>
+	<div>
+		<%= submit_tag '确定' %>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var sid = $("#slsource").val();
+		if (sid == 3)
+		{
+			$("#txtkw").css("display", "none");
+			$("#txtukw").css("display", "");
+		}
+		else
+		{
+			$("#txtkw").css("display", "");
+			$("#txtukw").css("display", "none");
+		}
+		
+		$("#slsource").change(function(){
+			sid = $("#slsource").val();
+			if (sid == 3)
+			{
+				$("#txtkw").css("display", "none");
+				$("#txtukw").css("display", "");
+			}
+			else
+			{
+				$("#txtkw").css("display", "");
+				$("#txtukw").css("display", "none");
+			}
+			
+		});
+	});
+</script>
